@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard AI - Live Prediction</title>
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Global Navigation Header Bar -->
+    <nav class="bg-gray-900 border-b border-gray-800 px-6 py-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center space-x-3">
+            <span class="text-2xl">🛡️</span>
+            <span class="text-xl font-black tracking-wide bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">CYBERGUARD AI</span>
+        </div>
+        <div class="space-x-4 text-sm font-medium">
+            <a href="/home" class="text-gray-400 hover:text-white transition">Home</a>
+            <a href="/train" class="text-gray-400 hover:text-white transition">Train Engine</a>
+            <a href="/predict" class="text-white border-b-2 border-indigo-500 pb-1 transition">Live Prediction</a>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Framework Container -->
+    <main class="flex-grow flex items-center justify-center p-6">
+        <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Left Grid Layout Pillar: Telemetry Input Web Form -->
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl space-y-4">
+                <div>
+                    <h2 class="text-xl font-extrabold text-white">Live Threat Testing Input</h2>
+                    <p class="text-gray-400 text-xs mt-1">Simulate network telemetry inputs directly matching your cyber dataset columns.</p>
+                </div>
+
+                <form action="/predict" method="POST" class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Protocol Type</label>
+                        <select name="protocol" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+                            <option value="TCP">TCP Connection</option>
+                            <option value="UDP">UDP Datagram</option>
+                            <option value="ICMP">ICMP Echo Request</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Duration (ms)</label>
+                        <input type="number" name="duration" required placeholder="e.g. 15" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Packet Count</label>
+                        <input type="number" name="packet_count" required placeholder="e.g. 450" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Source Bytes (src_bytes)</label>
+                        <input type="number" name="src_bytes" required placeholder="e.g. 8500" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Dest Bytes (dst_bytes)</label>
+                        <input type="number" name="dst_bytes" required placeholder="e.g. 340" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Failed Logins Count</label>
+                        <input type="number" name="failed_logins" required placeholder="e.g. 0 (Set > 0 for BruteForce check)" class="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    <button type="submit" class="col-span-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 text-sm rounded-lg transition shadow-lg shadow-indigo-600/10 cursor-pointer mt-2">
+                        Analyze Threat Profile Vectors
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right Grid Layout Pillar: Inference Monitoring Display Panel -->
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-6">
+                <div>
+                    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Inference Monitor Profile Output</h3>
+                    
+                    {% if result %}
+                    <!-- Dynamic Countermeasure and Prediction Result Layout Section -->
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-gray-400 uppercase font-semibold">Identified Classification Signature</span>
+                                <h1 class="text-3xl font-black text-white mt-1 tracking-wide">
+                                    {% if result.color == 'emerald' %} ✅ {% else %} ⚠️ {% endif %}{{ result.attack_type }}
+                                </h1>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-400 uppercase font-semibold block mb-1 text-right">Security Risk Level</span>
+                                <span class="px-3 py-1.5 rounded-lg text-xs font-black tracking-wider uppercase inline-block shadow-md
+                                    {% if result.color == 'red' %} bg-red-950/80 text-red-400 border border-red-800
+                                    {% elif result.color == 'orange' %} bg-orange-950/80 text-orange-400 border border-orange-800
+                                    {% elif result.color == 'yellow' %} bg-yellow-950/80 text-yellow-400 border border-yellow-800
+                                    {% else %} bg-emerald-950/80 text-emerald-400 border border-emerald-800 {% endif %}">
+                                    {{ result.risk_level }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Recommendations Card Block Container -->
+                        <div class="bg-gray-950/70 border rounded-xl p-5 space-y-3 
+                            {% if result.color == 'red' %} border-red-900/60 
+                            {% elif result.color == 'orange' %} border-orange-900/60 
+                            {% elif result.color == 'yellow' %} border-yellow-900/40 
+                            {% else %} border-emerald-900/40 {% endif %}">
+                            
+                            <div class="flex items-center space-x-2 text-sm font-bold uppercase tracking-wider
+                                {% if result.color == 'red' %} text-red-400 
+                                {% elif result.color == 'orange' %} text-orange-400 
+                                {% elif result.color == 'yellow' %} text-yellow-400 
+                                {% else %} text-emerald-400 {% endif %}">
+                                <span>🚨 Recommended Countermeasures</span>
+                            </div>
+                            
+                            <hr class="border-gray-800 my-1">
+                            
+                            <ul class="space-y-3 text-sm text-gray-300">
+                                <!-- Loop backend recommendations if they exist -->
+                                {% if result.recommendations %}
+                                    {% for recommendation in result.recommendations %}
+                                        <li class="flex items-start space-x-2 leading-relaxed">
+                                            <span class="text-indigo-400 font-bold mt-0.5">▪</span>
+                                            <span>{{ recommendation }}</span>
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <!-- Hardcoded Fallback UI Options -->
+                                    {% if result.attack_type == 'DDoS' %}
+                                        <li class="flex items-start space-x-2"><span class="text-red-400">▪</span><span>Enable immediate rate-limiting across edge routing infrastructures.</span></li>
+                                        <li class="flex items-start space-x-2"><span class="text-red-400">▪</span><span>Activate scrubbing centers to filter bulk malicious payload packets.</span></li>
+                                    {% elif result.attack_type == 'BruteForce' %}
+                                        <li class="flex items-start space-x-2"><span class="text-orange-400">▪</span><span>Enforce aggressive lockout timers on structural authentication endpoints.</span></li>
+                                        <li class="flex items-start space-x-2"><span class="text-orange-400">▪</span><span>Trigger mandatory step-up Multi-Factor Authentication requests.</span></li>
+                                    {% elif result.attack_type == 'PortScan' %}
+                                        <li class="flex items-start space-x-2"><span class="text-yellow-400">▪</span><span>Quarantine target threat vector source IPs at the perimeter firewall.</span></li>
+                                        <li class="flex items-start space-x-2"><span class="text-yellow-400">▪</span><span>Disable network ICMP/structural echo responses globally.</span></li>
+                                    {% else %}
+                                        <li class="flex items-start space-x-2"><span class="text-emerald-400">▪</span><span>No immediate intervention required. Maintain typical operational logs.</span></li>
+                                    {% endif %}
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% else %}
+                    <!-- Default Idle State (Awaiting Processing Input Form) -->
+                    <div class="text-center py-24 space-y-2 text-gray-500">
+                        <span class="text-4xl block">🔍</span>
+                        <p class="text-xs">Provide network parameters on the left to analyze real-time payload metric data.</p>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Bottom Core Tracking System Status Footer Block -->
+                <div class="text-xs text-gray-400 bg-gray-950 p-3 rounded-xl border border-gray-800 font-mono">
+                    Model Core Link: 
+                    {% if model_state.is_trained %}
+                        <span class="text-emerald-400 font-bold">Active Machine Learning Mode (Accuracy: {{ model_state.accuracy }})</span>
+                    {% else %}
+                        <span class="text-yellow-500 font-bold">Heuristic Baseline Simulation Mode</span>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Global Copyright Platform Footer Frame -->
+    <footer class="bg-gray-900 border-t border-gray-800 text-center py-4 text-xs text-gray-500">
+        CyberGuard Predictive Threat Mitigation Infrastructure &copy; 2026
+    </footer>
+
+</body>
+</html>

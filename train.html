@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard AI | Model Training Dashboard</title>
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Modern subtle grid background animation for a tech vibe */
+        .tech-bg {
+            background-image: linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-950 text-slate-100 min-h-screen flex flex-col tech-bg font-sans antialiased">
+
+    <!-- NAVBAR -->
+    <nav class="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50 shadow-xl transition-all">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3 group cursor-pointer">
+                <div class="p-2 bg-cyan-500/10 rounded-xl border border-cyan-500/30 group-hover:border-cyan-400 group-hover:bg-cyan-500/20 transition-all shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+                    <span class="text-2xl block transform group-hover:scale-110 transition-transform">🛡️</span>
+                </div>
+                <h1 class="text-2xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-500 bg-clip-text text-transparent">
+                    CyberGuard <span class="text-white font-light text-xl opacity-90">AI</span>
+                </h1>
+            </div>
+
+            <div class="flex items-center space-x-1 md:space-x-2">
+                <a href="/home" class="px-4 py-2 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 transition">
+                    Home
+                </a>
+                <a href="/train" class="px-4 py-2 rounded-xl text-sm font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.1)]">
+                    Train Engine
+                </a>
+                <a href="/predict" class="px-4 py-2 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/60 transition">
+                    Live Prediction
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow max-w-7xl mx-auto w-full p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- LEFT SIDEBAR: CONTROLS & STEPS -->
+        <div class="lg:col-span-5 space-y-6">
+            
+            <!-- HEADER CARD -->
+            <div class="bg-gradient-to-br from-gray-900 to-gray-950 rounded-2xl p-6 shadow-2xl border border-gray-800/80 relative overflow-hidden group">
+                <div class="absolute -right-10 -top-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all duration-500"></div>
+                <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all duration-500"></div>
+                
+                <span class="px-3 py-1 text-xs font-semibold tracking-wider uppercase text-cyan-400 bg-cyan-500/10 rounded-full border border-cyan-500/20">
+                    Core Engine
+                </span>
+                <h2 class="text-2xl font-bold mt-3 tracking-tight">ML Training Control</h2>
+                <p class="text-gray-400 text-sm mt-2 leading-relaxed">
+                    Upload your raw security logs or threat detection datasets to benchmark, optimize, and pipeline Logistic Regression, Decision Tree, and Random Forest architectures concurrently.
+                </p>
+            </div>
+
+            <!-- STEP 1: UPLOAD CARD -->
+            <div class="bg-gray-900/90 rounded-2xl p-6 border border-gray-800/80 shadow-2xl backdrop-blur-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold flex items-center space-x-2 text-gray-200">
+                        <span class="flex items-center justify-center w-6 h-6 rounded-md bg-cyan-500/20 text-cyan-400 text-xs border border-cyan-500/30 font-mono">01</span>
+                        <span>Upload Dataset</span>
+                    </h3>
+                </div>
+
+                <!-- ALERT SUCCESS -->
+                <div id="uploadSuccessAlert" class="hidden bg-emerald-950/40 border border-emerald-500/30 rounded-xl p-4 mb-4 flex items-center space-x-3 shadow-[0_0_15px_rgba(16,185,129,0.05)] animate-fade-in">
+                    <span class="text-xl">✅</span>
+                    <span id="uploadAlertText" class="text-emerald-400 text-sm font-medium">Dataset uploaded successfully.</span>
+                </div>
+
+                <form id="datasetUploadForm" onsubmit="handleUpload(event)" class="space-y-4">
+                    <div class="border-2 border-dashed border-gray-800 hover:border-cyan-500/50 rounded-xl p-8 text-center transition-all bg-gray-950/40 relative group cursor-pointer overflow-hidden">
+                        <input id="datasetInput" name="dataset" type="file" accept=".csv" required class="absolute inset-0 opacity-0 cursor-pointer z-10">
+                        <div class="space-y-3 transform group-hover:scale-[1.02] transition-transform duration-300">
+                            <div class="w-12 h-12 mx-auto bg-gray-900 border border-gray-800 group-hover:border-cyan-500/30 rounded-xl flex items-center justify-center text-2xl shadow-inner transition-colors">
+                                📁
+                            </div>
+                            <div>
+                                <p id="uploadPlaceholder" class="font-medium text-sm text-gray-300 group-hover:text-cyan-400 transition-colors">
+                                    Select cyber_dataset.csv
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">Structured CSV formatted samples only</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="uploadBtn" class="w-full bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-500 hover:to-cyan-600 active:scale-[0.99] shadow-lg shadow-cyan-950/40 text-white rounded-xl py-3 font-semibold text-sm transition-all tracking-wide cursor-pointer">
+                        Upload Data Engine
+                    </button>
+                </form>
+            </div>
+
+            <!-- STEP 2: PIPELINE ACTIVATION CARD -->
+            <div class="bg-gray-900/90 rounded-2xl p-6 border border-gray-800/80 shadow-2xl backdrop-blur-sm">
+                <h3 class="text-lg font-bold flex items-center space-x-2 text-gray-200 mb-4">
+                    <span class="flex items-center justify-center w-6 h-6 rounded-md bg-emerald-500/20 text-emerald-400 text-xs border border-emerald-500/30 font-mono">02</span>
+                    <span>Run Model Training</span>
+                </h3>
+
+                <div class="bg-gray-950/80 rounded-xl border border-gray-800/80 p-4 space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-900 pb-3">
+                        <div>
+                            <p class="text-xs text-gray-500 font-mono uppercase tracking-wider">Staged Source</p>
+                            <h4 id="stagedFileName" class="text-cyan-400 font-semibold text-sm mt-1 truncate max-w-[180px] md:max-w-xs">
+                                No Dataset Selected
+                            </h4>
+                        </div>
+                        <span class="w-2.5 h-2.5 rounded-full bg-gray-700 block ring-4 ring-gray-900/50" id="statusDot"></span>
+                    </div>
+                    
+                    <button id="runTrainingBtn" onclick="executeMlTraining()" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 active:scale-[0.99] shadow-lg shadow-emerald-950/40 text-white py-3 rounded-xl font-bold text-sm tracking-wide transition-all flex items-center justify-center space-x-2 cursor-pointer">
+                        <span>🚀 Run Model Training Engine</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR: AGGREGATED METRICS & VISUAL RESULTS -->
+        <div class="lg:col-span-7">
+            <!-- DEFAULT EMPTY PLACEHOLDER CARD -->
+            <div id="emptyReportState" class="bg-gray-900/40 border-2 border-dashed border-gray-800/80 rounded-3xl p-12 text-center text-gray-500 min-h-[500px] flex flex-col justify-center items-center space-y-4">
+                <span class="text-5xl opacity-40">📊</span>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-400">Awaiting Pipeline Activation</h3>
+                    <p class="text-sm text-gray-600 max-w-sm mx-auto mt-1">Staging your environment variables and uploading a verified security analytics profile will unlock immediate benchmarking reports here.</p>
+                </div>
+            </div>
+
+            <!-- TRAINING RESULT MAIN VISUAL BOARD (HIDDEN BY DEFAULT) -->
+            <div id="trainingMetricReport" class="hidden bg-gray-900/90 border border-emerald-500/20 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-md animate-fade-in space-y-6">
+                
+                <!-- SUCCESS STATUS HEADER -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-5">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-10 h-10 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-center text-xl shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                            ⚡
+                        </div>
+                        <div>
+                            <h2 id="trainingSuccessMsg" class="text-xl font-black text-emerald-400 tracking-tight">
+                                Evaluation Completed
+                            </h2>
+                            <p class="text-xs text-gray-400 mt-0.5 font-mono">Status: Production Optimized</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOP CARD: BEST PERFORMING ALGORITHM HIGHLIGHT -->
+                <div class="bg-gradient-to-r from-emerald-950/30 to-teal-950/20 rounded-2xl p-5 border border-emerald-500/20 relative overflow-hidden group shadow-inner shadow-emerald-950/20">
+                    <div class="absolute right-6 top-1/2 -translate-y-1/2 text-5xl opacity-10 font-black tracking-tighter uppercase select-none">CHAMPION</div>
+                    <p class="text-xs font-semibold tracking-wider uppercase text-emerald-400/80 font-mono">
+                        Optimal Architecture Selection
+                    </p>
+                    <h2 id="bestAlgoName" class="text-2xl md:text-3xl font-black text-white tracking-tight mt-1 bg-gradient-to-r from-white via-slate-200 to-emerald-400 bg-clip-text text-transparent">
+                        -
+                    </h2>
+                </div>
+
+                <!-- CORE METRICS METRICS GRID -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Accuracy -->
+                    <div class="bg-gray-950/60 rounded-2xl p-4 border border-gray-800 shadow-lg flex flex-col justify-between">
+                        <p class="text-xs text-gray-400 font-medium">Accuracy</p>
+                        <h2 id="valAccuracy" class="text-2xl md:text-3xl font-black text-white mt-2 font-mono tracking-tight">0%</h2>
+                    </div>
+                    <!-- Log Loss -->
+                    <div class="bg-gray-950/60 rounded-2xl p-4 border border-gray-800 shadow-lg flex flex-col justify-between">
+                        <p class="text-xs text-gray-400 font-medium">Log Loss</p>
+                        <h2 id="valLoss" class="text-2xl md:text-3xl font-black text-slate-300 mt-2 font-mono tracking-tight">0.0000</h2>
+                    </div>
+                    <!-- Precision -->
+                    <div class="bg-gray-950/60 rounded-2xl p-4 border border-gray-800 shadow-lg flex flex-col justify-between">
+                        <p class="text-xs text-gray-400 font-medium">Precision</p>
+                        <h2 id="valPrecision" class="text-2xl md:text-3xl font-black text-slate-300 mt-2 font-mono tracking-tight">0</h2>
+                    </div>
+                    <!-- Recall -->
+                    <div class="bg-gray-950/60 rounded-2xl p-4 border border-gray-800 shadow-lg flex flex-col justify-between">
+                        <p class="text-xs text-gray-400 font-medium">Recall</p>
+                        <h2 id="valRecall" class="text-2xl md:text-3xl font-black text-slate-300 mt-2 font-mono tracking-tight">0</h2>
+                    </div>
+                </div>
+
+                <!-- BOTTOM COMPLEMENTARY METRIC -->
+                <div class="bg-gray-950/60 rounded-2xl p-4 border border-gray-800 shadow-lg flex justify-between items-center px-5">
+                    <p class="text-xs text-gray-400 font-medium font-mono uppercase tracking-wider">Balanced F1 Global Score</p>
+                    <h2 id="valF1" class="text-2xl font-black text-cyan-400 font-mono">0</h2>
+                </div>
+
+                <!-- ANALYTICS CHART CONTAINER -->
+                <div class="bg-gray-950 rounded-2xl p-3 border border-gray-800 shadow-2xl overflow-hidden relative group">
+                    <div class="p-2 border-b border-gray-900 flex justify-between items-center">
+                        <span class="text-xs font-mono text-gray-400">Comparative Receiver Performance</span>
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    </div>
+                    <div class="bg-white rounded-xl p-2 mt-2 shadow-inner">
+                        <img id="comparisonChartImg" class="w-full h-auto min-h-[220px] max-h-[360px] object-contain rounded-lg mx-auto" alt="Model Evaluation ROC Curve Matrix">
+                    </div>
+                </div>
+
+                <!-- ACTION REDIRECT BUTTON -->
+                <a href="/predict" class="block text-center bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 active:scale-[0.99] text-white text-sm py-4 rounded-xl font-bold transition-all tracking-wide shadow-lg shadow-indigo-950/50">
+                    Deploy Model to Live Prediction Dashboard &rarr;
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900/60 backdrop-blur-sm border-t border-gray-800/80 text-center py-5 text-xs font-mono text-gray-500 tracking-wider">
+        &copy;  CyberGuard AI Infrastructure. All rights reserved.
+    </footer>
+
+    <script>
+        const datasetInput = document.getElementById("datasetInput");
+        const uploadPlaceholder = document.getElementById("uploadPlaceholder");
+        const stagedFileName = document.getElementById("stagedFileName");
+        const statusDot = document.getElementById("statusDot");
+
+        datasetInput.addEventListener("change", function () {
+            if (this.files.length > 0) {
+                const name = this.files[0].name;
+                uploadPlaceholder.innerText = name;
+                stagedFileName.innerText = name;
+                
+                // Toggle status indicator states
+                statusDot.classList.remove('bg-gray-700');
+                statusDot.classList.add('bg-cyan-400', 'ring-cyan-500/20');
+
+                document.getElementById("uploadSuccessAlert").classList.add("hidden");
+            }
+        });
+
+        // ========================
+        // Upload Dataset Engine
+        // ========================
+        function handleUpload(event) {
+            event.preventDefault();
+            const file = datasetInput.files[0];
+
+            if (!file) {
+                alert("Please select a valid dataset file.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("dataset", file);
+
+            const btn = document.getElementById("uploadBtn");
+            btn.disabled = true;
+            btn.innerHTML = `<span class="inline-block animate-pulse">Uploading Data Core Asset...</span>`;
+
+            fetch("/api/upload", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById("uploadSuccessAlert").classList.remove("hidden");
+                    document.getElementById("uploadAlertText").innerHTML = data.message;
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert("Dataset parsing pipeline failure.");
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = "Upload Data Engine";
+            });
+        }
+
+        // ========================
+        // Model Training Trigger
+        // ========================
+        function executeMlTraining() {
+            if (datasetInput.files.length === 0) {
+                alert("Please stage a dataset matrix profile before running analytics.");
+                return;
+            }
+
+            const btn = document.getElementById("runTrainingBtn");
+            btn.disabled = true;
+            btn.innerHTML = `<span class="flex items-center justify-center space-x-2"><svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Optimizing Models...</span></span>`;
+            
+            document.getElementById("trainingMetricReport").classList.add("hidden");
+            document.getElementById("emptyReportState").classList.remove("hidden");
+
+            fetch("/api/trigger-training", {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    btn.disabled = false;
+                    btn.innerHTML = "🚀 Run Model Training Engine";
+                    alert(data.message);
+                    return;
+                }
+                pollTrainingStatus();
+            })
+            .catch(error => {
+                console.error(error);
+                btn.disabled = false;
+                btn.innerHTML = "🚀 Run Model Training Engine";
+                alert("Asynchronous communication with Flask node severed.");
+            });
+        }
+
+        // ========================
+        // State Machine Polling
+        // ========================
+        function pollTrainingStatus() {
+            const timer = setInterval(function () {
+                fetch("/api/training-status")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "completed") {
+                        clearInterval(timer);
+                        
+                        document.getElementById("runTrainingBtn").disabled = false;
+                        document.getElementById("runTrainingBtn").innerHTML = "🚀 Run Model Training Engine";
+                        
+                        // Hide generic message, display rich dashboard metrics
+                        document.getElementById("emptyReportState").classList.add("hidden");
+                        document.getElementById("trainingMetricReport").classList.remove("hidden");
+
+                        document.getElementById("trainingSuccessMsg").innerHTML = data.message;
+                        document.getElementById("bestAlgoName").innerHTML = data.algorithm;
+                        document.getElementById("valAccuracy").innerHTML = data.accuracy + "%";
+                        document.getElementById("valLoss").innerHTML = data.loss;
+                        document.getElementById("valPrecision").innerHTML = data.precision;
+                        document.getElementById("valRecall").innerHTML = data.recall;
+                        document.getElementById("valF1").innerHTML = data.f1;
+
+                        if (data.chart_data) {
+                            document.getElementById("comparisonChartImg").src = "data:image/png;base64," + data.chart_data;
+                        }
+                    } else if (data.status === "failed") {
+                        clearInterval(timer);
+                        document.getElementById("runTrainingBtn").disabled = false;
+                        document.getElementById("runTrainingBtn").innerHTML = "🚀 Run  Model Training Engine";
+                        alert(data.message);
+                    }
+                })
+                .catch(function(error){
+                    clearInterval(timer);
+                    console.error(error);
+                    document.getElementById("runTrainingBtn").disabled = false;
+                    document.getElementById("runTrainingBtn").innerHTML = "🚀 Run Training Engine";
+                    alert("Asynchronous streaming runtime telemetry link dropped.");
+                });
+            }, 1500);
+        }
+    </script>
+</body>
+
+</html>

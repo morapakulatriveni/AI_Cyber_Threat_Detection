@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home - Cyber Threat Detection</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#0a0f1f;
+color:white;
+min-height:100vh;
+}
+
+/* Navbar */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 50px;
+background:#111827;
+box-shadow:0 0 15px cyan;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+color:#00ffff;
+}
+
+.nav-links a{
+text-decoration:none;
+color:white;
+margin-left:20px;
+font-weight:bold;
+}
+
+.nav-links a:hover{
+color:cyan;
+}
+
+/* Hero Section */
+
+.hero{
+text-align:center;
+padding:50px;
+}
+
+.hero h1{
+font-size:45px;
+color:#00ffff;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:18px;
+color:#d1d5db;
+line-height:1.8;
+}
+
+/* Detection Process */
+
+.process{
+padding:40px;
+}
+
+.process h2{
+text-align:center;
+color:#00ffff;
+margin-bottom:30px;
+}
+
+.cards{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+}
+
+.card{
+width:280px;
+background:#111827;
+padding:25px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 0 15px rgba(0,255,255,.3);
+transition:0.4s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+}
+
+.card h3{
+color:cyan;
+margin-bottom:15px;
+}
+
+/* Inputs Section */
+
+.inputs{
+padding:40px;
+text-align:center;
+}
+
+.inputs h2{
+color:#00ffff;
+margin-bottom:20px;
+}
+
+.input-list{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+max-width:900px;
+margin:auto;
+}
+
+.input-box{
+background:#111827;
+padding:20px;
+border-radius:12px;
+}
+
+/* Threat Levels */
+
+.threats{
+padding:40px;
+}
+
+.threats h2{
+text-align:center;
+color:#00ffff;
+margin-bottom:20px;
+}
+
+.levels{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.level{
+padding:20px 40px;
+border-radius:12px;
+font-weight:bold;
+font-size:20px;
+}
+
+.low{
+background:green;
+}
+
+.medium{
+background:orange;
+}
+
+.high{
+background:red;
+}
+
+/* Buttons */
+
+.actions{
+text-align:center;
+padding:40px;
+}
+
+.btn{
+padding:15px 35px;
+margin:10px;
+text-decoration:none;
+border-radius:30px;
+font-weight:bold;
+color:white;
+display:inline-block;
+}
+
+.train{
+background:#00bcd4;
+}
+
+.predict{
+background:#4caf50;
+}
+
+.btn:hover{
+transform:scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+<div class="logo">
+AI Cyber Threat Detection
+</div>
+
+<div class="nav-links">
+<a href="/home">Home</a>
+<a href="/train">Train Model</a>
+<a href="/prediction">Prediction</a>
+<a href="/">Logout</a>
+</div>
+</div>
+
+<div class="hero">
+<h1>Cyber Threat Detection Dashboard</h1>
+
+<p>
+Monitor network activities, train machine learning models,
+and predict cyber threats using Artificial Intelligence.
+</p>
+</div>
+
+<div class="process">
+
+<h2>Cyber Threat Detection Process</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>Step 1</h3>
+<p>Upload Cyber Security Dataset</p>
+</div>
+
+<div class="card">
+<h3>Step 2</h3>
+<p>Preprocess and Clean Data</p>
+</div>
+
+<div class="card">
+<h3>Step 3</h3>
+<p>Train RF, XGBoost & CNN Models</p>
+</div>
+
+<div class="card">
+<h3>Step 4</h3>
+<p>Predict Threat Level</p>
+</div>
+
+</div>
+</div>
+
+<div class="inputs">
+
+<h2>Prediction Input Features</h2>
+
+<div class="input-list">
+
+<div class="input-box">
+Duration
+</div>
+
+<div class="input-box">
+Protocol Type
+</div>
+
+<div class="input-box">
+Service
+</div>
+
+<div class="input-box">
+Source Bytes
+</div>
+
+<div class="input-box">
+Destination Bytes
+</div>
+
+<div class="input-box">
+Count
+</div>
+
+<div class="input-box">
+Logged In
+</div>
+
+<div class="input-box">
+Wrong Fragment
+</div>
+
+<div class="input-box">
+Hot Count
+</div>
+
+<div class="input-box">
+Connection Rate
+</div>
+
+</div>
+
+</div>
+
+<div class="threats">
+
+<h2>Threat Classification Levels</h2>
+
+<div class="levels">
+
+<div class="level low">
+LOW
+</div>
+
+<div class="level medium">
+MEDIUM
+</div>
+
+<div class="level high">
+HIGH
+</div>
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<a href="/train" class="btn train">
+Train Model
+</a>
+
+<a href="/prediction" class="btn predict">
+Predict Threat
+</a>
+
+</div>
+
+</body>
+</html>
